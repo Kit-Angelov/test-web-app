@@ -215,9 +215,44 @@
         </div>
     </div>
 
+    <!-- Форма для ввода email и телефона (скрыта по умолчанию) -->
+    <div id="contact-form-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:2000; align-items:center; justify-content:center;">
+        <form id="contact-form" style="background:white; border-radius:12px; padding:32px 24px; max-width:350px; margin:auto; box-shadow:0 8px 32px rgba(0,0,0,0.2); display:flex; flex-direction:column; gap:18px;">
+            <h2 style="margin-bottom:8px;">Введите контактные данные</h2>
+            <label>
+                Email:
+                <input type="email" id="contact-email" name="email" required style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc; margin-top:4px;">
+            </label>
+            <label>
+                Телефон:
+                <input type="tel" id="contact-phone" name="phone" required pattern="[+0-9\-() ]{7,}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc; margin-top:4px;">
+            </label>
+            <button type="submit" style="background:linear-gradient(45deg,#667eea,#764ba2); color:white; border:none; border-radius:8px; padding:10px 0; font-weight:600; font-size:1rem; cursor:pointer;">Отправить</button>
+            <button type="button" id="close-contact-form" style="background:none; color:#888; border:none; margin-top:4px; cursor:pointer;">Отмена</button>
+        </form>
+    </div>
+
     <div class="status" id="status"></div>
 
     <script>
+        // --- Query params parsing ---
+        /**
+         * Parses query parameters from the current URL and returns an object.
+         * @returns {Object} Key-value pairs of query params.
+         */
+        function getQueryParams() {
+            const params = {};
+            window.location.search.replace(/\??([^=&]+)=([^&]*)/g, function(_, key, value) {
+                params[decodeURIComponent(key)] = decodeURIComponent(value);
+            });
+            return params;
+        }
+
+        // Получаем email и phone из query параметров, если есть
+        const queryParams = getQueryParams();
+        let emailFromQuery = queryParams.email || '';
+        let phoneFromQuery = queryParams.phone || '';
+
         // Инициализация Telegram Web App
         const tg = Telegram?.WebApp;
         if (!tg) {
@@ -247,6 +282,22 @@
 
         // Функция покупки курса
         function buyCourse(courseId) {
+            // Проверяем наличие email и phone
+            if (emailFromQuery && phoneFromQuery) {
+                sendPurchaseData(courseId, emailFromQuery, phoneFromQuery);
+            } else {
+                // Показываем форму для ввода email и phone
+                showContactForm(courseId);
+            }
+        }
+
+        /**
+         * Отправляет данные о покупке курса, включая email и phone
+         * @param {number} courseId
+         * @param {string} email
+         * @param {string} phone
+         */
+        function sendPurchaseData(courseId, email, phone) {
             const courseNames = {
                 1: 'Веб-разработка с нуля',
                 2: 'Python для начинающих', 
@@ -256,7 +307,6 @@
                 6: 'DevOps и облачные технологии',
                 7: 'Стартап с нуля'
             };
-
             const coursePrices = {
                 1: 12999,
                 2: 9999,
@@ -266,8 +316,6 @@
                 6: 17999,
                 7: 19999
             };
-
-            // Данные для отправки в бот
             const purchaseData = {
                 action: 'buy_course',
                 course_id: courseId,
@@ -275,18 +323,14 @@
                 course_price: coursePrices[courseId],
                 user_id: userId,
                 user_name: userFirstName,
+                email: email,
+                phone: phone,
                 timestamp: new Date().toISOString()
             };
-
             console.log('Отправка данных в бот:', purchaseData);
-
             try {
-                // Отправляем данные через Telegram Web App API
                 tg?.sendData?.(JSON.stringify(purchaseData));
-                
                 showStatus(`Запрос на покупку курса "${courseNames[courseId]}" отправлен!`);
-                
-                // Дополнительно можно использовать MainButton для подтверждения
                 if (tg && tg.MainButton) {
                     tg.MainButton.setText(`Купить "${courseNames[courseId]}" за ${coursePrices[courseId]}₽`);
                     tg.MainButton.show();
@@ -295,11 +339,64 @@
                         tg.close();
                     });
                 }
-
             } catch (error) {
                 console.error('Ошибка отправки данных:', error);
                 showStatus('Ошибка при отправке запроса', true);
             }
+        }
+
+        /**
+         * Показывает форму для ввода email и телефона
+         * @param {number} courseId
+         */
+        function showContactForm(courseId) {
+            const modal = document.getElementById('contact-form-modal');
+            const form = document.getElementById('contact-form');
+            const emailInput = document.getElementById('contact-email');
+            const phoneInput = document.getElementById('contact-phone');
+            modal.style.display = 'flex';
+            // Сброс предыдущих значений
+            form.reset();
+            // Если email/phone уже есть частично — подставить
+            if (emailFromQuery) emailInput.value = emailFromQuery;
+            if (phoneFromQuery) phoneInput.value = phoneFromQuery;
+
+            // Обработчик отправки формы
+            form.onsubmit = function(e) {
+                e.preventDefault();
+                const email = emailInput.value.trim();
+                const phone = phoneInput.value.trim();
+                if (!validateEmail(email)) {
+                    showStatus('Введите корректный email', true);
+                    return;
+                }
+                if (!validatePhone(phone)) {
+                    showStatus('Введите корректный телефон', true);
+                    return;
+                }
+                // Сохраняем для повторного использования
+                emailFromQuery = email;
+                phoneFromQuery = phone;
+                modal.style.display = 'none';
+                sendPurchaseData(courseId, email, phone);
+            };
+            // Кнопка отмены
+            document.getElementById('close-contact-form').onclick = function() {
+                modal.style.display = 'none';
+            };
+        }
+
+        /**
+         * Простая валидация email
+         */
+        function validateEmail(email) {
+            return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email);
+        }
+        /**
+         * Простая валидация телефона (7+ цифр)
+         */
+        function validatePhone(phone) {
+            return /[0-9]{7,}/.test(phone.replace(/\D/g, ''));
         }
 
         // Настройка темы приложения
