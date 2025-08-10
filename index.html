@@ -219,12 +219,16 @@
 
     <script>
         // Инициализация Telegram Web App
-        let tg = window.Telegram.WebApp;
-        tg.expand();
+        const tg = Telegram?.WebApp;
+        if (!tg) {
+            console.error('Telegram WebApp SDK not available');
+        }
+        tg?.ready?.();
+        tg?.expand?.();
 
         // Получаем данные пользователя
-        let userId = tg.initDataUnsafe?.user?.id || 'demo_user';
-        let userFirstName = tg.initDataUnsafe?.user?.first_name || 'Пользователь';
+        const userId = tg?.initDataUnsafe?.user?.id || 'demo_user';
+        const userFirstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
         console.log('User ID:', userId);
         console.log('User Name:', userFirstName);
@@ -278,17 +282,19 @@
 
             try {
                 // Отправляем данные через Telegram Web App API
-                tg.sendData(JSON.stringify(purchaseData));
+                tg?.sendData?.(JSON.stringify(purchaseData));
                 
                 showStatus(`Запрос на покупку курса "${courseNames[courseId]}" отправлен!`);
                 
                 // Дополнительно можно использовать MainButton для подтверждения
-                tg.MainButton.setText(`Купить "${courseNames[courseId]}" за ${coursePrices[courseId]}₽`);
-                tg.MainButton.show();
-                tg.MainButton.onClick(() => {
-                    tg.sendData(JSON.stringify({...purchaseData, confirmed: true}));
-                    tg.close();
-                });
+                if (tg && tg.MainButton) {
+                    tg.MainButton.setText(`Купить "${courseNames[courseId]}" за ${coursePrices[courseId]}₽`);
+                    tg.MainButton.show();
+                    tg.MainButton.onClick(() => {
+                        tg.sendData(JSON.stringify({...purchaseData, confirmed: true}));
+                        tg.close();
+                    });
+                }
 
             } catch (error) {
                 console.error('Ошибка отправки данных:', error);
