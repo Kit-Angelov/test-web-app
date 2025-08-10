@@ -346,7 +346,7 @@
         }
 
         /**
-         * Показывает форму для ввода email и телефона
+         * Показывает форму для ввода email и телефона, только для неизвестных полей
          * @param {number} courseId
          */
         function showContactForm(courseId) {
@@ -354,18 +354,39 @@
             const form = document.getElementById('contact-form');
             const emailInput = document.getElementById('contact-email');
             const phoneInput = document.getElementById('contact-phone');
+            // Скрываем/показываем поля в зависимости от наличия данных
+            if (emailFromQuery) {
+                emailInput.parentElement.style.display = 'none';
+            } else {
+                emailInput.parentElement.style.display = '';
+            }
+            if (phoneFromQuery) {
+                phoneInput.parentElement.style.display = 'none';
+            } else {
+                phoneInput.parentElement.style.display = '';
+            }
+            // Если оба поля известны, форму не показываем
+            if (emailFromQuery && phoneFromQuery) {
+                modal.style.display = 'none';
+                sendPurchaseData(courseId, emailFromQuery, phoneFromQuery);
+                return;
+            }
             modal.style.display = 'flex';
-            // Сброс предыдущих значений
             form.reset();
-            // Если email/phone уже есть частично — подставить
             if (emailFromQuery) emailInput.value = emailFromQuery;
             if (phoneFromQuery) phoneInput.value = phoneFromQuery;
-
-            // Обработчик отправки формы
             form.onsubmit = function(e) {
                 e.preventDefault();
-                const email = emailInput.value.trim();
-                const phone = phoneInput.value.trim();
+                const email = emailFromQuery || emailInput.value.trim();
+                const phone = phoneFromQuery || phoneInput.value.trim();
+                if (!email) {
+                    showStatus('Введите email', true);
+                    return;
+                }
+                if (!phone) {
+                    showStatus('Введите телефон', true);
+                    return;
+                }
                 if (!validateEmail(email)) {
                     showStatus('Введите корректный email', true);
                     return;
@@ -374,13 +395,11 @@
                     showStatus('Введите корректный телефон', true);
                     return;
                 }
-                // Сохраняем для повторного использования
                 emailFromQuery = email;
                 phoneFromQuery = phone;
                 modal.style.display = 'none';
                 sendPurchaseData(courseId, email, phone);
             };
-            // Кнопка отмены
             document.getElementById('close-contact-form').onclick = function() {
                 modal.style.display = 'none';
             };
