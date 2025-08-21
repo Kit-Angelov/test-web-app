@@ -252,6 +252,8 @@
         tg?.ready?.();
         tg?.expand?.();
 
+
+
         // Получаем данные пользователя
         const userId = tg?.initDataUnsafe?.user?.id || 'demo_user';
         const userFirstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
@@ -312,7 +314,7 @@
                 course_id: courseId,
                 course_name: courseNames[courseId],
                 course_price: coursePrices[courseId],
-                currency: 'USD',
+                currency: 'USD',  // Фиксированная валюта USD
                 user_id: userId,
                 user_name: userFirstName,
                 email: email,
