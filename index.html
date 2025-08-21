@@ -158,59 +158,51 @@
 
         <div class="courses-grid">
             <div class="course-card">
-                <div class="course-icon" style="background: linear-gradient(45deg, #ff6b6b, #ee5a24);">💻</div>
-                <div class="course-title">Веб-разработка с нуля</div>
-                <div class="course-description">Изучите HTML, CSS, JavaScript и создайте свой первый сайт за 2 месяца</div>
-                <div class="course-price">₽12,999</div>
+                <div class="course-icon" style="background: linear-gradient(45deg, #ff6b6b, #ee5a24);">📊</div>
+                <div class="course-title">Навык управления проектами</div>
+                <div class="course-description">Изучите запуск и управление проектов от digital до ретейла</div>
+                <div class="course-price">$100</div>
                 <button class="buy-button" onclick="buyCourse(1)">Купить курс</button>
             </div>
 
             <div class="course-card">
-                <div class="course-icon" style="background: linear-gradient(45deg, #4834d4, #686de0);">🐍</div>
-                <div class="course-title">Python для начинающих</div>
-                <div class="course-description">Освойте основы программирования на Python и автоматизацию задач</div>
-                <div class="course-price">₽9,999</div>
+                <div class="course-icon" style="background: linear-gradient(45deg, #4834d4, #686de0);">✍️</div>
+                <div class="course-title">Навык копирайтинг</div>
+                <div class="course-description">Научитесь писать коммерческие тексты для статей, рассылок и постов в соцсети</div>
+                <div class="course-price">$100</div>
                 <button class="buy-button" onclick="buyCourse(2)">Купить курс</button>
             </div>
 
             <div class="course-card">
-                <div class="course-icon" style="background: linear-gradient(45deg, #00d2d3, #54a0ff);">📱</div>
-                <div class="course-title">Мобильная разработка</div>
-                <div class="course-description">Создавайте приложения для iOS и Android с React Native</div>
-                <div class="course-price">₽15,999</div>
+                <div class="course-icon" style="background: linear-gradient(45deg, #00d2d3, #54a0ff);">🎨</div>
+                <div class="course-title">Навык работы в Figma</div>
+                <div class="course-description">Figma с нуля за 2 месяца: от инструментария до процессов работы с макетами</div>
+                <div class="course-price">$100</div>
                 <button class="buy-button" onclick="buyCourse(3)">Купить курс</button>
             </div>
 
             <div class="course-card">
-                <div class="course-icon" style="background: linear-gradient(45deg, #ff9ff3, #f368e0);">🎨</div>
-                <div class="course-title">UI/UX Дизайн</div>
-                <div class="course-description">Научитесь создавать красивые и удобные интерфейсы в Figma</div>
-                <div class="course-price">₽11,999</div>
+                <div class="course-icon" style="background: linear-gradient(45deg, #ff9ff3, #f368e0);">⏰</div>
+                <div class="course-title">Навык тайм-менеджмент</div>
+                <div class="course-description">Освоите тайм-менеджмент для управления личными и рабочими задачами</div>
+                <div class="course-price">$100</div>
                 <button class="buy-button" onclick="buyCourse(4)">Купить курс</button>
             </div>
 
             <div class="course-card">
-                <div class="course-icon" style="background: linear-gradient(45deg, #feca57, #ff9ff3);">📊</div>
-                <div class="course-title">Анализ данных</div>
-                <div class="course-description">Изучите Python, pandas, matplotlib для работы с большими данными</div>
-                <div class="course-price">₽13,999</div>
+                <div class="course-icon" style="background: linear-gradient(45deg, #feca57, #ff9ff3);">💬</div>
+                <div class="course-title">Навык эффективная коммуникация</div>
+                <div class="course-description">Найдёте собственный стиль общения и начнёте говорить увереннее</div>
+                <div class="course-price">$100</div>
                 <button class="buy-button" onclick="buyCourse(5)">Купить курс</button>
             </div>
 
             <div class="course-card">
-                <div class="course-icon" style="background: linear-gradient(45deg, #48dbfb, #0abde3);">☁️</div>
-                <div class="course-title">DevOps и облачные технологии</div>
-                <div class="course-description">Docker, Kubernetes, AWS - полный стек для современной разработки</div>
-                <div class="course-price">₽17,999</div>
+                <div class="course-icon" style="background: linear-gradient(45deg, #48dbfb, #0abde3);">🤖</div>
+                <div class="course-title">Нейросети и ИИ для работы и личных задач</div>
+                <div class="course-description">Автоматизируете рутину с помощью ИИ и нейросетей</div>
+                <div class="course-price">$100</div>
                 <button class="buy-button" onclick="buyCourse(6)">Купить курс</button>
-            </div>
-
-            <div class="course-card">
-                <div class="course-icon" style="background: linear-gradient(45deg, #ff6348, #ff7675);">🚀</div>
-                <div class="course-title">Стартап с нуля</div>
-                <div class="course-description">От идеи до первых клиентов: создание и развитие собственного бизнеса</div>
-                <div class="course-price">₽19,999</div>
-                <button class="buy-button" onclick="buyCourse(7)">Купить курс</button>
             </div>
         </div>
     </div>
@@ -299,22 +291,20 @@
          */
         function sendPurchaseData(courseId, email, phone) {
             const courseNames = {
-                1: 'Веб-разработка с нуля',
-                2: 'Python для начинающих', 
-                3: 'Мобильная разработка',
-                4: 'UI/UX Дизайн',
-                5: 'Анализ данных',
-                6: 'DevOps и облачные технологии',
-                7: 'Стартап с нуля'
+                1: 'Навык управления проектами',
+                2: 'Навык копирайтинг', 
+                3: 'Навык работы в Figma',
+                4: 'Навык тайм-менеджмент',
+                5: 'Навык эффективная коммуникация',
+                6: 'Нейросети и ИИ для работы и личных задач'
             };
             const coursePrices = {
-                1: 12999,
-                2: 9999,
-                3: 15999,
-                4: 11999,
-                5: 13999,
-                6: 17999,
-                7: 19999
+                1: 100,
+                2: 100,
+                3: 100,
+                4: 100,
+                5: 100,
+                6: 100
             };
             const purchaseData = {
                 type: 'store',
@@ -333,7 +323,7 @@
                 tg?.sendData?.(JSON.stringify(purchaseData));
                 showStatus(`Запрос на покупку курса "${courseNames[courseId]}" отправлен!`);
                 if (tg && tg.MainButton) {
-                    tg.MainButton.setText(`Купить "${courseNames[courseId]}" за ${coursePrices[courseId]}₽`);
+                    tg.MainButton.setText(`Купить "${courseNames[courseId]}" за $${coursePrices[courseId]}`);
                     tg.MainButton.show();
                     tg.MainButton.onClick(() => {
                         tg.sendData(JSON.stringify({...purchaseData, confirmed: true}));
