@@ -155,7 +155,6 @@
             <h1>💎 Премиум Курсы</h1>
             <p>Выберите курс для изучения новых навыков</p>
         </div>
-
         <div class="courses-grid">
             <div class="course-card">
                 <div class="course-icon" style="background: linear-gradient(45deg, #ff6b6b, #ee5a24);">📊</div>
@@ -298,13 +297,14 @@
                 5: 'Навык эффективная коммуникация',
                 6: 'Нейросети и ИИ для работы и личных задач'
             };
+            // Цены курсов в долларах США (USD)
             const coursePrices = {
-                1: 100,
-                2: 100,
-                3: 100,
-                4: 100,
-                5: 100,
-                6: 100
+                1: 100, // $100
+                2: 100, // $100
+                3: 100, // $100
+                4: 100, // $100
+                5: 100, // $100
+                6: 100  // $100
             };
             const purchaseData = {
                 type: 'store',
@@ -312,6 +312,7 @@
                 course_id: courseId,
                 course_name: courseNames[courseId],
                 course_price: coursePrices[courseId],
+                currency: 'USD',
                 user_id: userId,
                 user_name: userFirstName,
                 email: email,
