@@ -157,50 +157,10 @@
         </div>
         <div class="courses-grid">
             <div class="course-card">
-                <div class="course-icon" style="background: linear-gradient(45deg, #ff6b6b, #ee5a24);">📊</div>
-                <div class="course-title">Навык управления проектами</div>
-                <div class="course-description">Изучите запуск и управление проектов от digital до ретейла</div>
-                <div class="course-price">$100</div>
-                <button class="buy-button" onclick="buyCourse(1)">Купить курс</button>
-            </div>
-
-            <div class="course-card">
-                <div class="course-icon" style="background: linear-gradient(45deg, #4834d4, #686de0);">✍️</div>
-                <div class="course-title">Навык копирайтинг</div>
-                <div class="course-description">Научитесь писать коммерческие тексты для статей, рассылок и постов в соцсети</div>
-                <div class="course-price">$100</div>
-                <button class="buy-button" onclick="buyCourse(2)">Купить курс</button>
-            </div>
-
-            <div class="course-card">
-                <div class="course-icon" style="background: linear-gradient(45deg, #00d2d3, #54a0ff);">🎨</div>
-                <div class="course-title">Навык работы в Figma</div>
-                <div class="course-description">Figma с нуля за 2 месяца: от инструментария до процессов работы с макетами</div>
-                <div class="course-price">$100</div>
-                <button class="buy-button" onclick="buyCourse(3)">Купить курс</button>
-            </div>
-
-            <div class="course-card">
-                <div class="course-icon" style="background: linear-gradient(45deg, #ff9ff3, #f368e0);">⏰</div>
-                <div class="course-title">Навык тайм-менеджмент</div>
-                <div class="course-description">Освоите тайм-менеджмент для управления личными и рабочими задачами</div>
-                <div class="course-price">$100</div>
-                <button class="buy-button" onclick="buyCourse(4)">Купить курс</button>
-            </div>
-
-            <div class="course-card">
-                <div class="course-icon" style="background: linear-gradient(45deg, #feca57, #ff9ff3);">💬</div>
-                <div class="course-title">Навык эффективная коммуникация</div>
-                <div class="course-description">Найдёте собственный стиль общения и начнёте говорить увереннее</div>
-                <div class="course-price">$100</div>
-                <button class="buy-button" onclick="buyCourse(5)">Купить курс</button>
-            </div>
-
-            <div class="course-card">
                 <div class="course-icon" style="background: linear-gradient(45deg, #48dbfb, #0abde3);">🤖</div>
                 <div class="course-title">Нейросети и ИИ для работы и личных задач</div>
                 <div class="course-description">Автоматизируете рутину с помощью ИИ и нейросетей</div>
-                <div class="course-price">$100</div>
+                <div class="course-price">$49.99</div>
                 <button class="buy-button" onclick="buyCourse(6)">Купить курс</button>
             </div>
         </div>
@@ -292,21 +252,11 @@
          */
         function sendPurchaseData(courseId, email, phone) {
             const courseNames = {
-                1: 'Навык управления проектами',
-                2: 'Навык копирайтинг', 
-                3: 'Навык работы в Figma',
-                4: 'Навык тайм-менеджмент',
-                5: 'Навык эффективная коммуникация',
                 6: 'Нейросети и ИИ для работы и личных задач'
             };
             // Цены курсов в долларах США (USD)
             const coursePrices = {
-                1: 100, // $100
-                2: 100, // $100
-                3: 100, // $100
-                4: 100, // $100
-                5: 100, // $100
-                6: 100  // $100
+                6: 49.99 // $49.99
             };
             const purchaseData = {
                 type: 'store',
