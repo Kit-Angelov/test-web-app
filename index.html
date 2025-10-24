@@ -138,6 +138,249 @@
             background: #e74c3c;
         }
 
+        /* Стили для модального окна формы контактов */
+        .contact-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.8);
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .contact-modal.show {
+            display: flex !important;
+        }
+
+        .contact-modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .contact-modal h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .contact-modal label {
+            display: block;
+            margin-bottom: 15px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .contact-modal input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            margin-top: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-modal input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .contact-modal button[type="submit"] {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-modal button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .contact-modal button[type="button"] {
+            background: none;
+            color: #888;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: underline;
+        }
+
+        /* Стили для модального окна выбора геолокации */
+        .geo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.8);
+            z-index: 10000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .geo-modal.show {
+            display: flex !important;
+        }
+
+        .geo-modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .geo-modal h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .geo-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .geo-option {
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            font-weight: 500;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .geo-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateY(-2px);
+        }
+
+        .geo-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .geo-option .flag {
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+
+        /* Стили для модального окна формы контактов */
+        .contact-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.8);
+            z-index: 10001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .contact-modal.show {
+            display: flex !important;
+        }
+
+        .contact-modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .contact-modal h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .contact-modal label {
+            display: block;
+            margin-bottom: 15px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .contact-modal input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            margin-top: 5px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-modal input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .contact-modal button[type="submit"] {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 24px;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-modal button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .contact-modal button[type="button"] {
+            background: none;
+            color: #888;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            text-decoration: underline;
+        }
+
         @media (max-width: 768px) {
             .courses-grid {
                 grid-template-columns: 1fr;
@@ -145,6 +388,11 @@
             
             .header h1 {
                 font-size: 2rem;
+            }
+
+            .geo-modal-content {
+                padding: 20px;
+                margin: 20px;
             }
         }
     </style>
@@ -154,6 +402,7 @@
         <div class="header">
             <h1>💎 Премиум Курсы</h1>
             <p>Выберите курс для изучения новых навыков</p>
+            <button id="change-geo-btn" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.3); border-radius:8px; padding:8px 16px; margin-top:10px; cursor:pointer; font-size:0.9rem; user-select:none; -webkit-user-select:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation;">🌍 Изменить страну</button>
         </div>
         <div class="courses-grid">
             <div class="course-card">
@@ -166,21 +415,34 @@
         </div>
     </div>
 
+    <!-- Модальное окно выбора геолокации -->
+    <div id="geo-modal" class="geo-modal" style="display: none;">
+        <div class="geo-modal-content">
+            <h2>🌍 Выберите вашу страну</h2>
+            <div class="geo-options">
+                <!-- Опции создаются динамически через JavaScript -->
+            </div>
+            <button id="confirm-geo" style="background:linear-gradient(45deg,#667eea,#764ba2); color:white; border:none; border-radius:8px; padding:12px 24px; font-weight:600; font-size:1rem; cursor:pointer; width:100%;">Продолжить</button>
+        </div>
+    </div>
+
     <!-- Форма для ввода email и телефона (скрыта по умолчанию) -->
-    <div id="contact-form-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4); z-index:2000; align-items:center; justify-content:center;">
-        <form id="contact-form" style="background:white; border-radius:12px; padding:32px 24px; max-width:350px; margin:auto; box-shadow:0 8px 32px rgba(0,0,0,0.2); display:flex; flex-direction:column; gap:18px;">
-            <h2 style="margin-bottom:8px;">Введите контактные данные</h2>
-            <label>
-                Email:
-                <input type="email" id="contact-email" name="email" required style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc; margin-top:4px;">
-            </label>
-            <label>
-                Телефон:
-                <input type="tel" id="contact-phone" name="phone" required pattern="[+0-9\-() ]{7,}" style="width:100%; padding:8px; border-radius:6px; border:1px solid #ccc; margin-top:4px;">
-            </label>
-            <button type="submit" style="background:linear-gradient(45deg,#667eea,#764ba2); color:white; border:none; border-radius:8px; padding:10px 0; font-weight:600; font-size:1rem; cursor:pointer;">Отправить</button>
-            <button type="button" id="close-contact-form" style="background:none; color:#888; border:none; margin-top:4px; cursor:pointer;">Отмена</button>
-        </form>
+    <div id="contact-form-modal" class="contact-modal">
+        <div class="contact-modal-content">
+            <form id="contact-form">
+                <h2>Введите контактные данные</h2>
+                <label>
+                    Email:
+                    <input type="email" id="contact-email" name="email" required>
+                </label>
+                <label>
+                    Телефон:
+                    <input type="tel" id="contact-phone" name="phone" required pattern="[+0-9\-() ]{7,}">
+                </label>
+                <button type="submit">Отправить</button>
+                <button type="button" id="close-contact-form">Отмена</button>
+            </form>
+        </div>
     </div>
 
     <div class="status" id="status"></div>
@@ -204,22 +466,60 @@
         let emailFromQuery = queryParams.email || '';
         let phoneFromQuery = queryParams.phone || '';
 
+        // Переменные для геолокации
+        let selectedGeo = null;
+        let selectedCurrency = 'USD';
+        let selectedPrice = 49.99;
+
+        // Объект с ценами по геолокациям
+        const geoPricing = {
+            by: {
+                currency: 'BYN',
+                price: 149.99,
+                name: 'Беларусь',
+                flag: '🇧🇾'
+            },
+            ru: {
+                currency: 'RUB', 
+                price: 3999.99,
+                name: 'Россия',
+                flag: '🇷🇺'
+            },
+            cis: {
+                currency: 'USD',
+                price: 49.99,
+                name: 'СНГ',
+                flag: '🌍'
+            }
+        };
+
         // Инициализация Telegram Web App
         const tg = Telegram?.WebApp;
-        if (!tg) {
-            console.error('Telegram WebApp SDK not available');
+        
+        // Инициализируем WebApp если доступен
+        try {
+            tg?.ready();
+            tg?.expand();
+        } catch (error) {
+            console.warn('Telegram WebApp not available:', error);
         }
-        tg?.ready?.();
-        tg?.expand?.();
+        
 
-
+        // Отправляем событие только при первом открытии WebApp магазина
+        try {
+            tg?.sendData(JSON.stringify({ 
+                type: 'store_page_opened'
+            }));
+            sessionStorage.setItem('store_page_opened', 'true');
+        } catch (e) {
+            console.error('Failed to send store page opened event:', e);
+            // Не закрываем webapp при ошибке отправки события
+        }
 
         // Получаем данные пользователя
         const userId = tg?.initDataUnsafe?.user?.id || 'demo_user';
         const userFirstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
-        console.log('User ID:', userId);
-        console.log('User Name:', userFirstName);
 
         // Функция показа статуса
         function showStatus(message, isError = false) {
@@ -254,33 +554,35 @@
             const courseNames = {
                 100051299: 'Нейросети и ИИ для работы и личных задач. Тариф Стартовый'
             };
-            // Цены курсов в долларах США (USD)
-            const coursePrices = {
-                100051299: 49.99 // $49.99
-            };
+            
             const purchaseData = {
                 type: 'store',
                 action: 'buy_course',
                 course_id: courseId,
                 course_name: courseNames[courseId],
-                course_price: coursePrices[courseId],
-                currency: 'USD',  // Фиксированная валюта USD
+                course_price: selectedPrice,
+                currency: selectedCurrency,
+                geo: selectedGeo,
                 user_id: userId,
                 user_name: userFirstName,
                 email: email,
                 phone: phone,
                 timestamp: new Date().toISOString()
             };
-            console.log('Отправка данных в бот:', purchaseData);
             try {
-                tg?.sendData?.(JSON.stringify(purchaseData));
+                tg?.sendData(JSON.stringify(purchaseData));
                 showStatus(`Запрос на покупку курса "${courseNames[courseId]}" отправлен!`);
-                if (tg && tg.MainButton) {
-                    tg.MainButton.setText(`Купить "${courseNames[courseId]}" за $${coursePrices[courseId]}`);
+                if (tg?.MainButton) {
+                    tg.MainButton.setText(`Купить "${courseNames[courseId]}" за ${selectedPrice} ${selectedCurrency}`);
                     tg.MainButton.show();
                     tg.MainButton.onClick(() => {
-                        tg.sendData(JSON.stringify({...purchaseData, confirmed: true}));
-                        tg.close();
+                        try {
+                            tg?.sendData(JSON.stringify({...purchaseData, confirmed: true}));
+                            tg?.close();
+                        } catch (e) {
+                            console.error('Ошибка при подтверждении покупки:', e);
+                            showStatus('Ошибка при подтверждении покупки', true);
+                        }
                     });
                 }
             } catch (error) {
@@ -298,6 +600,7 @@
             const form = document.getElementById('contact-form');
             const emailInput = document.getElementById('contact-email');
             const phoneInput = document.getElementById('contact-phone');
+            
             // Скрываем/показываем поля в зависимости от наличия данных
             if (emailFromQuery) {
                 emailInput.parentElement.style.display = 'none';
@@ -309,16 +612,21 @@
             } else {
                 phoneInput.parentElement.style.display = '';
             }
+            
             // Если оба поля известны, форму не показываем
             if (emailFromQuery && phoneFromQuery) {
-                modal.style.display = 'none';
+                hideContactForm();
                 sendPurchaseData(courseId, emailFromQuery, phoneFromQuery);
                 return;
             }
-            modal.style.display = 'flex';
+            
+            // Показываем модальное окно
+            modal.classList.add('show');
             form.reset();
             if (emailFromQuery) emailInput.value = emailFromQuery;
             if (phoneFromQuery) phoneInput.value = phoneFromQuery;
+            
+            // Обработчик отправки формы
             form.onsubmit = function(e) {
                 e.preventDefault();
                 const email = emailFromQuery || emailInput.value.trim();
@@ -341,12 +649,37 @@
                 }
                 emailFromQuery = email;
                 phoneFromQuery = phone;
-                modal.style.display = 'none';
+                hideContactForm();
                 sendPurchaseData(courseId, email, phone);
             };
+            
+            // Обработчик кнопки отмены
             document.getElementById('close-contact-form').onclick = function() {
-                modal.style.display = 'none';
+                hideContactForm();
             };
+
+            // Обработчик клика по фону для закрытия модального окна
+            modal.addEventListener('click', handleContactModalBackgroundClick);
+        }
+
+        /**
+         * Обработчик клика по фону модального окна формы контактов
+         */
+        function handleContactModalBackgroundClick(event) {
+            if (event.target === event.currentTarget) {
+                hideContactForm();
+            }
+        }
+
+        /**
+         * Скрывает модальное окно формы контактов
+         */
+        function hideContactForm() {
+            const modal = document.getElementById('contact-form-modal');
+            if (modal) {
+                modal.classList.remove('show');
+                modal.removeEventListener('click', handleContactModalBackgroundClick);
+            }
         }
 
         /**
@@ -363,13 +696,217 @@
         }
 
         // Настройка темы приложения
-        if (tg.colorScheme === 'dark') {
+        if (tg?.colorScheme === 'dark') {
             document.body.style.background = 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)';
+        }
+
+        // Функции для работы с геолокацией
+        /**
+         * Создает опции геолокации динамически на основе объекта geoPricing
+         */
+        function createGeoOptions() {
+            const geoOptionsContainer = document.querySelector('.geo-options');
+            geoOptionsContainer.innerHTML = '';
+            
+            Object.entries(geoPricing).forEach(([geoKey, geoData]) => {
+                const option = document.createElement('div');
+                option.className = 'geo-option';
+                option.dataset.geo = geoKey;
+                option.innerHTML = `<span class="flag">${geoData.flag}</span> ${geoData.name}`;
+                geoOptionsContainer.appendChild(option);
+            });
+        }
+
+        /**
+         * Показывает модальное окно выбора геолокации
+         */
+        function showGeoModal() {
+            const geoModal = document.getElementById('geo-modal');
+            if (!geoModal) {
+                console.error('Geo modal element not found');
+                return;
+            }
+            
+            // Используем класс для показа модального окна
+            geoModal.classList.add('show');
+            
+            // Создаем опции динамически
+            createGeoOptions();
+            
+            // Обработчики для выбора геолокации с улучшенной совместимостью
+            const geoOptions = document.querySelectorAll('.geo-option');
+            geoOptions.forEach(option => {
+                // Удаляем старые обработчики если есть
+                option.removeEventListener('click', handleGeoOptionClick);
+                option.removeEventListener('touchstart', handleGeoOptionClick);
+                // Добавляем новые обработчики
+                option.addEventListener('click', handleGeoOptionClick);
+                option.addEventListener('touchstart', handleGeoOptionClick);
+            });
+            
+            // Обработчик кнопки подтверждения
+            const confirmBtn = document.getElementById('confirm-geo');
+            if (confirmBtn) {
+                confirmBtn.removeEventListener('click', handleGeoConfirm);
+                confirmBtn.removeEventListener('touchstart', handleGeoConfirm);
+                confirmBtn.addEventListener('click', handleGeoConfirm);
+                confirmBtn.addEventListener('touchstart', handleGeoConfirm);
+            }
+
+            // Обработчик клика по фону для закрытия модального окна
+            geoModal.addEventListener('click', handleGeoModalBackgroundClick);
+        }
+
+        /**
+         * Обработчик клика по фону модального окна геолокации
+         */
+        function handleGeoModalBackgroundClick(event) {
+            if (event.target === event.currentTarget) {
+                hideGeoModal();
+            }
+        }
+
+        /**
+         * Скрывает модальное окно выбора геолокации
+         */
+        function hideGeoModal() {
+            const geoModal = document.getElementById('geo-modal');
+            if (geoModal) {
+                geoModal.classList.remove('show');
+                geoModal.removeEventListener('click', handleGeoModalBackgroundClick);
+            }
+        }
+
+        /**
+         * Обработчик клика по опции геолокации
+         */
+        function handleGeoOptionClick(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            // Убираем выделение с других опций
+            const geoOptions = document.querySelectorAll('.geo-option');
+            geoOptions.forEach(opt => opt.classList.remove('selected'));
+            
+            // Выделяем выбранную опцию
+            this.classList.add('selected');
+            
+            // Добавляем визуальную обратную связь
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        /**
+         * Обработчик подтверждения выбора геолокации
+         */
+        function handleGeoConfirm(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const selectedOption = document.querySelector('.geo-option.selected');
+            if (selectedOption) {
+                selectedGeo = selectedOption.dataset.geo;
+                const geoData = geoPricing[selectedGeo];
+                selectedCurrency = geoData.currency;
+                selectedPrice = geoData.price;
+                
+                // Сохраняем выбор в localStorage
+                localStorage.setItem('selectedGeo', selectedGeo);
+                localStorage.setItem('selectedCurrency', selectedCurrency);
+                localStorage.setItem('selectedPrice', selectedPrice);
+                
+                // Обновляем отображение цен
+                updateCoursePrices();
+                
+                // Скрываем модальное окно
+                hideGeoModal();
+                
+                showStatus(`Выбрана страна: ${geoData.name}`, false);
+            } else {
+                showStatus('Пожалуйста, выберите страну', true);
+            }
+        }
+
+        /**
+         * Загружает сохраненную геолокацию из localStorage
+         */
+        function loadSavedGeo() {
+            const savedGeo = localStorage.getItem('selectedGeo');
+            
+            if (savedGeo && geoPricing[savedGeo]) {
+                selectedGeo = savedGeo;
+                const geoData = geoPricing[savedGeo];
+                selectedCurrency = geoData.currency;
+                selectedPrice = geoData.price;
+                updateCoursePrices();
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Обновляет отображение цен курсов в зависимости от выбранной геолокации
+         */
+        function updateCoursePrices() {
+            const priceElements = document.querySelectorAll('.course-price');
+            priceElements.forEach(element => {
+                const courseId = element.closest('.course-card').querySelector('.buy-button').onclick.toString().match(/buyCourse\((\d+)\)/);
+                if (courseId) {
+                    const courseIdNum = parseInt(courseId[1]);
+                    if (courseIdNum === 100051299) {
+                        element.textContent = `${selectedPrice} ${selectedCurrency}`;
+                    }
+                }
+            });
         }
 
         // Показываем приветствие
         if (userFirstName !== 'Пользователь') {
             showStatus(`Добро пожаловать, ${userFirstName}!`);
+        }
+
+        // Обработчик клавиши Escape для закрытия модальных окон
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const geoModal = document.getElementById('geo-modal');
+                const contactModal = document.getElementById('contact-form-modal');
+                
+                if (geoModal && geoModal.classList.contains('show')) {
+                    hideGeoModal();
+                } else if (contactModal && contactModal.classList.contains('show')) {
+                    hideContactForm();
+                }
+            }
+        });
+
+        // Проверяем, есть ли сохраненная геолокация
+        if (!loadSavedGeo()) {
+            // Если нет сохраненной геолокации, показываем модальное окно
+            showGeoModal();
+        }
+
+        // Обработчик кнопки изменения геолокации с улучшенной совместимостью
+        const changeGeoBtn = document.getElementById('change-geo-btn');
+        if (changeGeoBtn) {
+            // Удаляем старые обработчики если есть
+            changeGeoBtn.removeEventListener('click', handleChangeGeoClick);
+            changeGeoBtn.removeEventListener('touchstart', handleChangeGeoClick);
+            
+            // Добавляем обработчики для клика и тача
+            changeGeoBtn.addEventListener('click', handleChangeGeoClick);
+            changeGeoBtn.addEventListener('touchstart', handleChangeGeoClick);
+        }
+
+        /**
+         * Обработчик клика по кнопке изменения геолокации
+         */
+        function handleChangeGeoClick(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            showGeoModal();
         }
     </script>
 </body>
