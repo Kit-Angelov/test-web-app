@@ -138,6 +138,70 @@
             background: #e74c3c;
         }
 
+        /* Стили для модального окна выбора геолокации */
+        .geo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.6);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .geo-modal-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .geo-modal h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+            font-size: 1.5rem;
+        }
+
+        .geo-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .geo-option {
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+            font-weight: 500;
+        }
+
+        .geo-option:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+            transform: translateY(-2px);
+        }
+
+        .geo-option.selected {
+            border-color: #667eea;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .geo-option .flag {
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+
         @media (max-width: 768px) {
             .courses-grid {
                 grid-template-columns: 1fr;
@@ -145,6 +209,11 @@
             
             .header h1 {
                 font-size: 2rem;
+            }
+
+            .geo-modal-content {
+                padding: 20px;
+                margin: 20px;
             }
         }
     </style>
@@ -154,6 +223,7 @@
         <div class="header">
             <h1>💎 Премиум Курсы</h1>
             <p>Выберите курс для изучения новых навыков</p>
+            <button id="change-geo-btn" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.3); border-radius:8px; padding:8px 16px; margin-top:10px; cursor:pointer; font-size:0.9rem;">🌍 Изменить страну</button>
         </div>
         <div class="courses-grid">
             <div class="course-card">
@@ -163,6 +233,17 @@
                 <div class="course-price">$49.99</div>
                 <button class="buy-button" onclick="buyCourse(100051299)">Купить курс</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно выбора геолокации -->
+    <div id="geo-modal" class="geo-modal" style="display: none;">
+        <div class="geo-modal-content">
+            <h2>🌍 Выберите вашу страну</h2>
+            <div class="geo-options">
+                <!-- Опции создаются динамически через JavaScript -->
+            </div>
+            <button id="confirm-geo" style="background:linear-gradient(45deg,#667eea,#764ba2); color:white; border:none; border-radius:8px; padding:12px 24px; font-weight:600; font-size:1rem; cursor:pointer; width:100%;">Продолжить</button>
         </div>
     </div>
 
@@ -204,6 +285,33 @@
         let emailFromQuery = queryParams.email || '';
         let phoneFromQuery = queryParams.phone || '';
 
+        // Переменные для геолокации
+        let selectedGeo = null;
+        let selectedCurrency = 'USD';
+        let selectedPrice = 49.99;
+
+        // Объект с ценами по геолокациям
+        const geoPricing = {
+            by: {
+                currency: 'BYN',
+                price: 149.99,
+                name: 'Беларусь',
+                flag: '🇧🇾'
+            },
+            ru: {
+                currency: 'RUB', 
+                price: 3999.99,
+                name: 'Россия',
+                flag: '🇷🇺'
+            },
+            cis: {
+                currency: 'USD',
+                price: 49.99,
+                name: 'СНГ',
+                flag: '🌍'
+            }
+        };
+
         // Инициализация Telegram Web App
         const tg = Telegram?.WebApp;
         if (!tg) {
@@ -211,6 +319,20 @@
         }
         tg?.ready?.();
         tg?.expand?.();
+
+        // Отправляем событие только при первом открытии WebApp магазина
+        if (!sessionStorage.getItem('store_page_opened')) {
+            try {
+                tg?.sendData?.(JSON.stringify({ 
+                    type: 'store_page_opened'
+                }));
+                sessionStorage.setItem('store_page_opened', 'true');
+            } catch (e) {
+                console.error('Failed to send store page opened event:', e);
+            }
+        }
+
+
 
 
 
@@ -254,17 +376,15 @@
             const courseNames = {
                 100051299: 'Нейросети и ИИ для работы и личных задач. Тариф Стартовый'
             };
-            // Цены курсов в долларах США (USD)
-            const coursePrices = {
-                100051299: 49.99 // $49.99
-            };
+            
             const purchaseData = {
                 type: 'store',
                 action: 'buy_course',
                 course_id: courseId,
                 course_name: courseNames[courseId],
-                course_price: coursePrices[courseId],
-                currency: 'USD',  // Фиксированная валюта USD
+                course_price: selectedPrice,
+                currency: selectedCurrency,
+                geo: selectedGeo,
                 user_id: userId,
                 user_name: userFirstName,
                 email: email,
@@ -276,7 +396,7 @@
                 tg?.sendData?.(JSON.stringify(purchaseData));
                 showStatus(`Запрос на покупку курса "${courseNames[courseId]}" отправлен!`);
                 if (tg && tg.MainButton) {
-                    tg.MainButton.setText(`Купить "${courseNames[courseId]}" за $${coursePrices[courseId]}`);
+                    tg.MainButton.setText(`Купить "${courseNames[courseId]}" за ${selectedPrice} ${selectedCurrency}`);
                     tg.MainButton.show();
                     tg.MainButton.onClick(() => {
                         tg.sendData(JSON.stringify({...purchaseData, confirmed: true}));
@@ -367,10 +487,117 @@
             document.body.style.background = 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)';
         }
 
+        // Функции для работы с геолокацией
+        /**
+         * Создает опции геолокации динамически на основе объекта geoPricing
+         */
+        function createGeoOptions() {
+            const geoOptionsContainer = document.querySelector('.geo-options');
+            geoOptionsContainer.innerHTML = '';
+            
+            Object.entries(geoPricing).forEach(([geoKey, geoData]) => {
+                const option = document.createElement('div');
+                option.className = 'geo-option';
+                option.dataset.geo = geoKey;
+                option.innerHTML = `<span class="flag">${geoData.flag}</span> ${geoData.name}`;
+                geoOptionsContainer.appendChild(option);
+            });
+        }
+
+        /**
+         * Показывает модальное окно выбора геолокации
+         */
+        function showGeoModal() {
+            const geoModal = document.getElementById('geo-modal');
+            geoModal.style.display = 'flex';
+            
+            // Создаем опции динамически
+            createGeoOptions();
+            
+            // Обработчики для выбора геолокации
+            const geoOptions = document.querySelectorAll('.geo-option');
+            geoOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Убираем выделение с других опций
+                    geoOptions.forEach(opt => opt.classList.remove('selected'));
+                    // Выделяем выбранную опцию
+                    this.classList.add('selected');
+                });
+            });
+            
+            // Обработчик кнопки подтверждения
+            document.getElementById('confirm-geo').onclick = function() {
+                const selectedOption = document.querySelector('.geo-option.selected');
+                if (selectedOption) {
+                    selectedGeo = selectedOption.dataset.geo;
+                    const geoData = geoPricing[selectedGeo];
+                    selectedCurrency = geoData.currency;
+                    selectedPrice = geoData.price;
+                    
+                    // Сохраняем выбор в localStorage
+                    localStorage.setItem('selectedGeo', selectedGeo);
+                    localStorage.setItem('selectedCurrency', selectedCurrency);
+                    localStorage.setItem('selectedPrice', selectedPrice);
+                    
+                    // Обновляем отображение цен
+                    updateCoursePrices();
+                    
+                    // Скрываем модальное окно
+                    geoModal.style.display = 'none';
+                } else {
+                    showStatus('Пожалуйста, выберите страну', true);
+                }
+            };
+        }
+
+        /**
+         * Загружает сохраненную геолокацию из localStorage
+         */
+        function loadSavedGeo() {
+            const savedGeo = localStorage.getItem('selectedGeo');
+            
+            if (savedGeo && geoPricing[savedGeo]) {
+                selectedGeo = savedGeo;
+                const geoData = geoPricing[savedGeo];
+                selectedCurrency = geoData.currency;
+                selectedPrice = geoData.price;
+                updateCoursePrices();
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Обновляет отображение цен курсов в зависимости от выбранной геолокации
+         */
+        function updateCoursePrices() {
+            const priceElements = document.querySelectorAll('.course-price');
+            priceElements.forEach(element => {
+                const courseId = element.closest('.course-card').querySelector('.buy-button').onclick.toString().match(/buyCourse\((\d+)\)/);
+                if (courseId) {
+                    const courseIdNum = parseInt(courseId[1]);
+                    if (courseIdNum === 100051299) {
+                        element.textContent = `${selectedPrice} ${selectedCurrency}`;
+                    }
+                }
+            });
+        }
+
         // Показываем приветствие
         if (userFirstName !== 'Пользователь') {
             showStatus(`Добро пожаловать, ${userFirstName}!`);
         }
+
+        // Проверяем, есть ли сохраненная геолокация
+        if (!loadSavedGeo()) {
+            // Если нет сохраненной геолокации, показываем модальное окно
+            showGeoModal();
+        }
+
+        // Обработчик кнопки изменения геолокации
+        document.getElementById('change-geo-btn').onclick = function() {
+            showGeoModal();
+        };
     </script>
 </body>
 </html>
