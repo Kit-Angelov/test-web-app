@@ -331,17 +331,17 @@
         
 
         // Отправляем событие только при первом открытии WebApp магазина
-        if (!sessionStorage.getItem('store_page_opened')) {
-            try {
-                tg.sendData(JSON.stringify({ 
-                    type: 'store_page_opened'
-                }));
-                sessionStorage.setItem('store_page_opened', 'true');
-            } catch (e) {
-                console.error('Failed to send store page opened event:', e);
-                // Не закрываем webapp при ошибке отправки события
-            }
+        // if (!sessionStorage.getItem('store_page_opened')) {
+        try {
+            tg.sendData(JSON.stringify({ 
+                type: 'store_page_opened'
+            }));
+            sessionStorage.setItem('store_page_opened', 'true');
+        } catch (e) {
+            console.error('Failed to send store page opened event:', e);
+            // Не закрываем webapp при ошибке отправки события
         }
+        //}
 
         // Получаем данные пользователя
         const userId = tg.initDataUnsafe?.user?.id || 'demo_user';
