@@ -145,11 +145,12 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: rgba(0,0,0,0.6);
-            z-index: 3000;
+            background: rgba(0,0,0,0.8);
+            z-index: 9999;
             display: flex;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(5px);
         }
 
         .geo-modal-content {
@@ -183,6 +184,10 @@
             transition: all 0.3s ease;
             background: white;
             font-weight: 500;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
         }
 
         .geo-option:hover {
@@ -223,7 +228,7 @@
         <div class="header">
             <h1>💎 Премиум Курсы</h1>
             <p>Выберите курс для изучения новых навыков</p>
-            <button id="change-geo-btn" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.3); border-radius:8px; padding:8px 16px; margin-top:10px; cursor:pointer; font-size:0.9rem;">🌍 Изменить страну</button>
+            <button id="change-geo-btn" style="background:rgba(255,255,255,0.2); color:white; border:1px solid rgba(255,255,255,0.3); border-radius:8px; padding:8px 16px; margin-top:10px; cursor:pointer; font-size:0.9rem; user-select:none; -webkit-user-select:none; -webkit-tap-highlight-color:transparent; touch-action:manipulation;">🌍 Изменить страну</button>
         </div>
         <div class="courses-grid">
             <div class="course-card">
@@ -323,6 +328,7 @@
         // Инициализируем WebApp
         tg.ready();
         tg.expand();
+        
 
         // Отправляем событие только при первом открытии WebApp магазина
         if (!sessionStorage.getItem('store_page_opened')) {
@@ -331,7 +337,6 @@
                     type: 'store_page_opened'
                 }));
                 sessionStorage.setItem('store_page_opened', 'true');
-                console.log('Store page opened event sent successfully');
             } catch (e) {
                 console.error('Failed to send store page opened event:', e);
                 // Не закрываем webapp при ошибке отправки события
@@ -342,8 +347,6 @@
         const userId = tg.initDataUnsafe?.user?.id || 'demo_user';
         const userFirstName = tg.initDataUnsafe?.user?.first_name || 'Пользователь';
 
-        console.log('User ID:', userId);
-        console.log('User Name:', userFirstName);
 
         // Функция показа статуса
         function showStatus(message, isError = false) {
@@ -393,7 +396,6 @@
                 phone: phone,
                 timestamp: new Date().toISOString()
             };
-            console.log('Отправка данных в бот:', purchaseData);
             try {
                 tg.sendData(JSON.stringify(purchaseData));
                 showStatus(`Запрос на покупку курса "${courseNames[courseId]}" отправлен!`);
@@ -516,45 +518,96 @@
          */
         function showGeoModal() {
             const geoModal = document.getElementById('geo-modal');
+            if (!geoModal) {
+                console.error('Geo modal element not found');
+                return;
+            }
+            
             geoModal.style.display = 'flex';
+            
+            // Принудительно обновляем стили для Telegram WebApp
+            geoModal.style.zIndex = '9999';
+            geoModal.style.position = 'fixed';
+            geoModal.style.top = '0';
+            geoModal.style.left = '0';
+            geoModal.style.width = '100vw';
+            geoModal.style.height = '100vh';
             
             // Создаем опции динамически
             createGeoOptions();
             
-            // Обработчики для выбора геолокации
+            // Обработчики для выбора геолокации с улучшенной совместимостью
             const geoOptions = document.querySelectorAll('.geo-option');
             geoOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    // Убираем выделение с других опций
-                    geoOptions.forEach(opt => opt.classList.remove('selected'));
-                    // Выделяем выбранную опцию
-                    this.classList.add('selected');
-                });
+                // Удаляем старые обработчики если есть
+                option.removeEventListener('click', handleGeoOptionClick);
+                option.removeEventListener('touchstart', handleGeoOptionClick);
+                // Добавляем новые обработчики
+                option.addEventListener('click', handleGeoOptionClick);
+                option.addEventListener('touchstart', handleGeoOptionClick);
             });
             
             // Обработчик кнопки подтверждения
-            document.getElementById('confirm-geo').onclick = function() {
-                const selectedOption = document.querySelector('.geo-option.selected');
-                if (selectedOption) {
-                    selectedGeo = selectedOption.dataset.geo;
-                    const geoData = geoPricing[selectedGeo];
-                    selectedCurrency = geoData.currency;
-                    selectedPrice = geoData.price;
-                    
-                    // Сохраняем выбор в localStorage
-                    localStorage.setItem('selectedGeo', selectedGeo);
-                    localStorage.setItem('selectedCurrency', selectedCurrency);
-                    localStorage.setItem('selectedPrice', selectedPrice);
-                    
-                    // Обновляем отображение цен
-                    updateCoursePrices();
-                    
-                    // Скрываем модальное окно
-                    geoModal.style.display = 'none';
-                } else {
-                    showStatus('Пожалуйста, выберите страну', true);
-                }
-            };
+            const confirmBtn = document.getElementById('confirm-geo');
+            if (confirmBtn) {
+                confirmBtn.removeEventListener('click', handleGeoConfirm);
+                confirmBtn.removeEventListener('touchstart', handleGeoConfirm);
+                confirmBtn.addEventListener('click', handleGeoConfirm);
+                confirmBtn.addEventListener('touchstart', handleGeoConfirm);
+            }
+        }
+
+        /**
+         * Обработчик клика по опции геолокации
+         */
+        function handleGeoOptionClick(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            // Убираем выделение с других опций
+            const geoOptions = document.querySelectorAll('.geo-option');
+            geoOptions.forEach(opt => opt.classList.remove('selected'));
+            
+            // Выделяем выбранную опцию
+            this.classList.add('selected');
+            
+            // Добавляем визуальную обратную связь
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+        }
+
+        /**
+         * Обработчик подтверждения выбора геолокации
+         */
+        function handleGeoConfirm(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const selectedOption = document.querySelector('.geo-option.selected');
+            if (selectedOption) {
+                selectedGeo = selectedOption.dataset.geo;
+                const geoData = geoPricing[selectedGeo];
+                selectedCurrency = geoData.currency;
+                selectedPrice = geoData.price;
+                
+                // Сохраняем выбор в localStorage
+                localStorage.setItem('selectedGeo', selectedGeo);
+                localStorage.setItem('selectedCurrency', selectedCurrency);
+                localStorage.setItem('selectedPrice', selectedPrice);
+                
+                // Обновляем отображение цен
+                updateCoursePrices();
+                
+                // Скрываем модальное окно
+                const geoModal = document.getElementById('geo-modal');
+                geoModal.style.display = 'none';
+                
+                showStatus(`Выбрана страна: ${geoData.name}`, false);
+            } else {
+                showStatus('Пожалуйста, выберите страну', true);
+            }
         }
 
         /**
@@ -601,10 +654,27 @@
             showGeoModal();
         }
 
-        // Обработчик кнопки изменения геолокации
-        document.getElementById('change-geo-btn').onclick = function() {
+        // Обработчик кнопки изменения геолокации с улучшенной совместимостью
+        const changeGeoBtn = document.getElementById('change-geo-btn');
+        if (changeGeoBtn) {
+            // Удаляем старые обработчики если есть
+            changeGeoBtn.removeEventListener('click', handleChangeGeoClick);
+            changeGeoBtn.removeEventListener('touchstart', handleChangeGeoClick);
+            
+            // Добавляем обработчики для клика и тача
+            changeGeoBtn.addEventListener('click', handleChangeGeoClick);
+            changeGeoBtn.addEventListener('touchstart', handleChangeGeoClick);
+        }
+
+        /**
+         * Обработчик клика по кнопке изменения геолокации
+         */
+        function handleChangeGeoClick(event) {
+            event.preventDefault();
+            event.stopPropagation();
+            
             showGeoModal();
-        };
+        }
     </script>
 </body>
 </html>
