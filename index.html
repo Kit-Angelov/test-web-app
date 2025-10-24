@@ -319,21 +319,19 @@
 
         // Инициализация Telegram Web App
         const tg = Telegram?.WebApp;
-        if (!tg) {
-            console.error('Telegram WebApp SDK not available');
-            // Если Telegram WebApp недоступен, не продолжаем выполнение
-            return;
-        }
         
-        // Инициализируем WebApp
-        tg.ready();
-        tg.expand();
+        // Инициализируем WebApp если доступен
+        try {
+            tg?.ready();
+            tg?.expand();
+        } catch (error) {
+            console.warn('Telegram WebApp not available:', error);
+        }
         
 
         // Отправляем событие только при первом открытии WebApp магазина
-        // if (!sessionStorage.getItem('store_page_opened')) {
         try {
-            tg.sendData(JSON.stringify({ 
+            tg?.sendData(JSON.stringify({ 
                 type: 'store_page_opened'
             }));
             sessionStorage.setItem('store_page_opened', 'true');
@@ -341,11 +339,10 @@
             console.error('Failed to send store page opened event:', e);
             // Не закрываем webapp при ошибке отправки события
         }
-        //}
 
         // Получаем данные пользователя
-        const userId = tg.initDataUnsafe?.user?.id || 'demo_user';
-        const userFirstName = tg.initDataUnsafe?.user?.first_name || 'Пользователь';
+        const userId = tg?.initDataUnsafe?.user?.id || 'demo_user';
+        const userFirstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
 
 
         // Функция показа статуса
@@ -397,15 +394,15 @@
                 timestamp: new Date().toISOString()
             };
             try {
-                tg.sendData(JSON.stringify(purchaseData));
+                tg?.sendData(JSON.stringify(purchaseData));
                 showStatus(`Запрос на покупку курса "${courseNames[courseId]}" отправлен!`);
-                if (tg.MainButton) {
+                if (tg?.MainButton) {
                     tg.MainButton.setText(`Купить "${courseNames[courseId]}" за ${selectedPrice} ${selectedCurrency}`);
                     tg.MainButton.show();
                     tg.MainButton.onClick(() => {
                         try {
-                            tg.sendData(JSON.stringify({...purchaseData, confirmed: true}));
-                            tg.close();
+                            tg?.sendData(JSON.stringify({...purchaseData, confirmed: true}));
+                            tg?.close();
                         } catch (e) {
                             console.error('Ошибка при подтверждении покупки:', e);
                             showStatus('Ошибка при подтверждении покупки', true);
@@ -492,7 +489,7 @@
         }
 
         // Настройка темы приложения
-        if (tg.colorScheme === 'dark') {
+        if (tg?.colorScheme === 'dark') {
             document.body.style.background = 'linear-gradient(135deg, #2c3e50 0%, #34495e 100%)';
         }
 
