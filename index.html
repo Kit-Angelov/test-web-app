@@ -316,29 +316,31 @@
         const tg = Telegram?.WebApp;
         if (!tg) {
             console.error('Telegram WebApp SDK not available');
+            // Если Telegram WebApp недоступен, не продолжаем выполнение
+            return;
         }
-        tg?.ready?.();
-        tg?.expand?.();
+        
+        // Инициализируем WebApp
+        tg.ready();
+        tg.expand();
 
         // Отправляем событие только при первом открытии WebApp магазина
         if (!sessionStorage.getItem('store_page_opened')) {
             try {
-                tg?.sendData?.(JSON.stringify({ 
+                tg.sendData(JSON.stringify({ 
                     type: 'store_page_opened'
                 }));
                 sessionStorage.setItem('store_page_opened', 'true');
+                console.log('Store page opened event sent successfully');
             } catch (e) {
                 console.error('Failed to send store page opened event:', e);
+                // Не закрываем webapp при ошибке отправки события
             }
         }
 
-
-
-
-
         // Получаем данные пользователя
-        const userId = tg?.initDataUnsafe?.user?.id || 'demo_user';
-        const userFirstName = tg?.initDataUnsafe?.user?.first_name || 'Пользователь';
+        const userId = tg.initDataUnsafe?.user?.id || 'demo_user';
+        const userFirstName = tg.initDataUnsafe?.user?.first_name || 'Пользователь';
 
         console.log('User ID:', userId);
         console.log('User Name:', userFirstName);
@@ -393,14 +395,19 @@
             };
             console.log('Отправка данных в бот:', purchaseData);
             try {
-                tg?.sendData?.(JSON.stringify(purchaseData));
+                tg.sendData(JSON.stringify(purchaseData));
                 showStatus(`Запрос на покупку курса "${courseNames[courseId]}" отправлен!`);
-                if (tg && tg.MainButton) {
+                if (tg.MainButton) {
                     tg.MainButton.setText(`Купить "${courseNames[courseId]}" за ${selectedPrice} ${selectedCurrency}`);
                     tg.MainButton.show();
                     tg.MainButton.onClick(() => {
-                        tg.sendData(JSON.stringify({...purchaseData, confirmed: true}));
-                        tg.close();
+                        try {
+                            tg.sendData(JSON.stringify({...purchaseData, confirmed: true}));
+                            tg.close();
+                        } catch (e) {
+                            console.error('Ошибка при подтверждении покупки:', e);
+                            showStatus('Ошибка при подтверждении покупки', true);
+                        }
                     });
                 }
             } catch (error) {
